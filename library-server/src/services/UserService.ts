@@ -11,5 +11,13 @@ export async function register(user: IUser): Promise<IUserModel> {
 
   try {
     const hashedPassword = await bcrypt.hash(user.password, ROUNDS);
-  } catch (error: any) {}
+
+    //destructer the user that we passed in, and replace the password with the password encrypted
+    const saved = new UserDao({ ...user, password: hashedPassword });
+
+    //saves the user to our database and return it
+    return await saved.save();
+  } catch (error: any) {
+    throw new Error("Unable to create user at this time");
+  }
 }

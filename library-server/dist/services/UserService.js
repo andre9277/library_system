@@ -16,6 +16,7 @@ exports.register = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = require("../config");
 const UserDao_1 = __importDefault(require("../daos/UserDao"));
+const LibraryErros_1 = require("../utils/LibraryErros");
 //return a Promise of type IUserModel
 function register(user) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -28,7 +29,8 @@ function register(user) {
             return yield saved.save();
         }
         catch (error) {
-            throw new Error("Unable to create user at this time");
+            /* throw new Error("Unable to create user at this time"); */
+            throw new LibraryErros_1.UnableToSaveUserError(error.message); //we can check what type of error we have in our controller
         }
     });
 }

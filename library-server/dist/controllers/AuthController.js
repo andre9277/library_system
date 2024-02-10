@@ -27,10 +27,20 @@ function handleRegister(req, res) {
             });
         }
         catch (error) {
-            res.status(500).json({
-                message: "Unalbe to register user at this time",
-                error: error.message,
-            });
+            //user cant register twice
+            if (error.message.includes("E11000 duplicate key error collection")) {
+                res.status(409).json({
+                    message: "User with email already exists",
+                    error: error.message,
+                });
+            }
+            else {
+                //Outro erro
+                res.status(500).json({
+                    message: "Unalbe to register user at this time",
+                    error: error.message,
+                });
+            }
         }
     });
 }

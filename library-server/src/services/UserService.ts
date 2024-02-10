@@ -4,6 +4,7 @@ import { config } from "../config";
 
 import UserDao, { IUserModel } from "../daos/UserDao";
 import { IUser } from "../models/User";
+import { UnableToSaveUserError } from "../utils/LibraryErros";
 
 //return a Promise of type IUserModel
 export async function register(user: IUser): Promise<IUserModel> {
@@ -18,6 +19,8 @@ export async function register(user: IUser): Promise<IUserModel> {
     //saves the user to our database and return it
     return await saved.save();
   } catch (error: any) {
-    throw new Error("Unable to create user at this time");
+    /* throw new Error("Unable to create user at this time"); */
+
+    throw new UnableToSaveUserError(error.message); //we can check what type of error we have in our controller
   }
 }

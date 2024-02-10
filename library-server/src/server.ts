@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import { config } from "./config";
 import mongoose from "mongoose";
+import { registerRoutes } from "./routes";
 
 const PORT = config.server.port;
 
@@ -20,6 +21,9 @@ app.use(cors());
     });
 
     console.log("Connection to MongoDB successfully made");
+
+    //all of our routes are automaticcally setup (dont need to list them all here)
+    registerRoutes(app);
 
     app.get("/health", (req: Request, res: Response) => {
       res.status(200).json({ message: "Server is running properly!" });

@@ -15,6 +15,9 @@ const MONGO_URL = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@localhost:27017
 const PORT = process.env.SERVER_PORT
     ? Number(process.env.SERVER_PORT)
     : 8000;
+const ROUNDS = process.env.SERVER_ROUNDS
+    ? Number(process.env.SERVER_ROUNDS)
+    : Math.floor(Math.random() * 11);
 //export to access files in other places
 exports.config = {
     mongo: {
@@ -22,5 +25,6 @@ exports.config = {
     },
     server: {
         port: PORT,
+        rounds: ROUNDS,
     },
 };

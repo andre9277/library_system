@@ -16,6 +16,7 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const config_1 = require("./config");
 const mongoose_1 = __importDefault(require("mongoose"));
+const routes_1 = require("./routes");
 const PORT = config_1.config.server.port;
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -30,6 +31,8 @@ app.use((0, cors_1.default)());
                 authMechanism: "DEFAULT",
             });
             console.log("Connection to MongoDB successfully made");
+            //all of our routes are automaticcally setup (dont need to list them all here)
+            (0, routes_1.registerRoutes)(app);
             app.get("/health", (req, res) => {
                 res.status(200).json({ message: "Server is running properly!" });
             });

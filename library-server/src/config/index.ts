@@ -14,6 +14,10 @@ const PORT: number = process.env.SERVER_PORT
   ? Number(process.env.SERVER_PORT)
   : 8000;
 
+const ROUNDS: number = process.env.SERVER_ROUNDS
+  ? Number(process.env.SERVER_ROUNDS)
+  : Math.floor(Math.random() * 11);
+
 //export to access files in other places
 export const config = {
   mongo: {
@@ -21,5 +25,6 @@ export const config = {
   },
   server: {
     port: PORT,
+    rounds: ROUNDS,
   },
 };

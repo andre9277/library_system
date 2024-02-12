@@ -11,4 +11,7 @@ router.post(
   AuthController.handleRegister
 );
 
+//handle login
+router.post("/login", AuthController.handleLogin);
+
 export = router;

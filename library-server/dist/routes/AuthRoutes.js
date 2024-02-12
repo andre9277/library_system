@@ -8,4 +8,6 @@ const Validation_1 = require("../middlewares/Validation");
 const router = express_1.default.Router();
 //post request, handle by the handleRegister
 router.post("/register", (0, Validation_1.ValidateSchema)(Validation_1.Schemas.user.create), AuthController_1.default.handleRegister);
+//handle login
+router.post("/login", AuthController_1.default.handleLogin);
 module.exports = router;

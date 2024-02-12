@@ -45,7 +45,7 @@ async function handleLogin(req: Request, res: Response) {
 
     //if we login
     res.status(200).json({
-      message: "User logged ion successfully",
+      message: "User logged in successfully",
       user: {
         _id: loggedIn.id,
         type: loggedIn.type,

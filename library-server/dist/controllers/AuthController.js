@@ -44,4 +44,29 @@ function handleRegister(req, res) {
         }
     });
 }
-exports.default = { handleRegister };
+function handleLogin(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const credentials = req.body;
+        try {
+            const loggedIn = yield (0, UserService_1.login)(credentials);
+            //if we login
+            res.status(200).json({
+                message: "User logged in successfully",
+                user: {
+                    _id: loggedIn.id,
+                    type: loggedIn.type,
+                    firstName: loggedIn.firstName,
+                    lastName: loggedIn.lastName,
+                    email: loggedIn.email,
+                },
+            });
+        }
+        catch (error) {
+            res.status(500).json({
+                message: "Unable to login user at this time",
+                error: error.message,
+            });
+        }
+    });
+}
+exports.default = { handleRegister, handleLogin };

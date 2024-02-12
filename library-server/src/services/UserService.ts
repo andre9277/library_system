@@ -24,3 +24,34 @@ export async function register(user: IUser): Promise<IUserModel> {
     throw new UnableToSaveUserError(error.message); //we can check what type of error we have in our controller
   }
 }
+
+export async function login(credentials: {
+  email: string;
+  password: string;
+}): Promise<IUserModel> {
+  const { email, password } = credentials;
+
+  try {
+    //search for the spec email in the db
+    const user = await UserDao.findOne({ email });
+
+    if (!user) {
+      throw new Error("Invalid username or password");
+    } else {
+      //compares the password given in the login and saved in the database
+      const validPassword: boolean = await bcrypt.compare(
+        password,
+        user.password
+      );
+
+      //if the passwords match
+      if (validPassword) {
+        return user;
+      } else {
+        throw new Error("Invalid username or password");
+      }
+    }
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}

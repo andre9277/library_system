@@ -1,7 +1,8 @@
 //Basic Authentication
 import { Request, Response } from "express";
-import { register } from "../services/UserService";
+import { login, register } from "../services/UserService";
 import { IUser } from "../models/User";
+import { IUserModel } from "../daos/UserDao";
 
 async function handleRegister(req: Request, res: Response) {
   const user: IUser = req.body; //json body of our request
@@ -36,4 +37,29 @@ async function handleRegister(req: Request, res: Response) {
   }
 }
 
-export default { handleRegister };
+async function handleLogin(req: Request, res: Response) {
+  const credentials = req.body;
+
+  try {
+    const loggedIn: IUserModel = await login(credentials);
+
+    //if we login
+    res.status(200).json({
+      message: "User logged ion successfully",
+      user: {
+        _id: loggedIn.id,
+        type: loggedIn.type,
+        firstName: loggedIn.firstName,
+        lastName: loggedIn.lastName,
+        email: loggedIn.email,
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      message: "Unable to login user at this time",
+      error: error.message,
+    });
+  }
+}
+
+export default { handleRegister, handleLogin };

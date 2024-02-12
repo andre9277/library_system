@@ -9,5 +9,5 @@ const router = express_1.default.Router();
 //post request, handle by the handleRegister
 router.post("/register", (0, Validation_1.ValidateSchema)(Validation_1.Schemas.user.create), AuthController_1.default.handleRegister);
 //handle login
-router.post("/login", AuthController_1.default.handleLogin);
+router.post("/login", (0, Validation_1.ValidateSchema)(Validation_1.Schemas.user.login), AuthController_1.default.handleLogin);
 module.exports = router;

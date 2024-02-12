@@ -28,5 +28,11 @@ export const Schemas = {
         .required(),
       password: Joi.string().required(),
     }),
+    login: Joi.object<{ email: string; password: string }>({
+      email: Joi.string()
+        .regex(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/)
+        .required(),
+      password: Joi.string().required(),
+    }),
   },
 }; //pass this schema to the router now

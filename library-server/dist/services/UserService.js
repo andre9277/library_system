@@ -42,7 +42,8 @@ function login(credentials) {
             //search for the spec email in the db
             const user = yield UserDao_1.default.findOne({ email });
             if (!user) {
-                throw new Error("Invalid username or password");
+                //custom error
+                throw new LibraryErros_1.InvalidUsernameOrPasswrodError("Invalid username or password");
             }
             else {
                 //compares the password given in the login and saved in the database
@@ -52,12 +53,13 @@ function login(credentials) {
                     return user;
                 }
                 else {
-                    throw new Error("Invalid username or password");
+                    //custom error
+                    throw new LibraryErros_1.InvalidUsernameOrPasswrodError("Invalid username or password");
                 }
             }
         }
         catch (error) {
-            throw new Error(error.message);
+            throw error;
         }
     });
 }

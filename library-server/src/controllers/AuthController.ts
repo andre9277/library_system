@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { login, register } from "../services/UserService";
 import { IUser } from "../models/User";
 import { IUserModel } from "../daos/UserDao";
+import { InvalidUsernameOrPasswrodError } from "../utils/LibraryErros";
 
 async function handleRegister(req: Request, res: Response) {
   const user: IUser = req.body; //json body of our request
@@ -55,10 +56,19 @@ async function handleLogin(req: Request, res: Response) {
       },
     });
   } catch (error: any) {
-    res.status(500).json({
-      message: "Unable to login user at this time",
-      error: error.message,
-    });
+    if (error instanceof InvalidUsernameOrPasswrodError) {
+      res
+        .status(401)
+        .json({
+          message: "Unable to login user at this time",
+          error: error.message,
+        });
+    } else {
+      res.status(500).json({
+        message: "Unable to login user at this time",
+        error: error.message,
+      });
+    }
   }
 }
 

@@ -4,7 +4,10 @@ import { config } from "../config";
 
 import UserDao, { IUserModel } from "../daos/UserDao";
 import { IUser } from "../models/User";
-import { UnableToSaveUserError } from "../utils/LibraryErros";
+import {
+  UnableToSaveUserError,
+  InvalidUsernameOrPasswrodError,
+} from "../utils/LibraryErros";
 
 //return a Promise of type IUserModel
 export async function register(user: IUser): Promise<IUserModel> {
@@ -36,7 +39,8 @@ export async function login(credentials: {
     const user = await UserDao.findOne({ email });
 
     if (!user) {
-      throw new Error("Invalid username or password");
+      //custom error
+      throw new InvalidUsernameOrPasswrodError("Invalid username or password");
     } else {
       //compares the password given in the login and saved in the database
       const validPassword: boolean = await bcrypt.compare(
@@ -48,10 +52,13 @@ export async function login(credentials: {
       if (validPassword) {
         return user;
       } else {
-        throw new Error("Invalid username or password");
+        //custom error
+        throw new InvalidUsernameOrPasswrodError(
+          "Invalid username or password"
+        );
       }
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    throw error;
   }
 }

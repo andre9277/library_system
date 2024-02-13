@@ -2,8 +2,13 @@ import React, { useRef, useState } from "react";
 import axios from "axios";
 
 import "./LoginForm.css";
+import { User } from "../../../../models/User";
 
-export const LoginForm: React.FC = () => {
+interface LoginFormProps {
+  updateLoggedInUser(user: User): void;
+}
+
+export const LoginForm: React.FC<LoginFormProps> = ({ updateLoggedInUser }) => {
   const [error, setError] = useState<boolean>(false);
 
   const emailRef = useRef<HTMLInputElement>(null);
@@ -21,7 +26,8 @@ export const LoginForm: React.FC = () => {
         });
 
         setError(false);
-        console.log(req.data.user);
+        //console.log(req.data.user);
+        updateLoggedInUser(req.data.user);
       } catch (e) {
         setError(true);
       }

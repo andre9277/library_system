@@ -1,7 +1,14 @@
+import { User } from "./models/User";
+import HomePage from "./pages/HomePage/HomePage";
+import { useState } from "react";
+
 function App() {
+  const [displayLogin, setDisplayLogin] = useState<boolean>(true);
+  const [loggedInUser, setLoggedInUser] = useState<User>();
+
   return (
     <div>
-      <h1>Hello React</h1>
+      <HomePage displayLogin={displayLogin} />
     </div>
   );
 }

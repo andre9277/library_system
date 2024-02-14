@@ -1,43 +1,36 @@
 import React, { useRef, useState } from "react";
-import axios from "axios";
-
+import { UseDispatch, useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../redux/ReduxStore";
+import { loginUser } from "../../../../redux/slices/AuthenticationSlice";
 import "./LoginForm.css";
 import { User } from "../../../../models/User";
 
-interface LoginFormProps {
-  updateLoggedInUser(user: User): void;
-}
-
-export const LoginForm: React.FC<LoginFormProps> = ({ updateLoggedInUser }) => {
-  const [error, setError] = useState<boolean>(false);
-
+export const LoginForm: React.FC = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+
+  //gets the initial state from the store
+  const auth = useSelector((state: RootState) => state.authentication);
+
+  const dispatch: AppDispatch = useDispatch();
 
   const handleLoginUser = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    //if none of these attributtes are null, we can procede with the login
     if (emailRef && emailRef.current && passwordRef && passwordRef.current) {
-      try {
-        const req = await axios.post("http://localhost:8000/auth/login", {
+      dispatch(
+        loginUser({
           email: emailRef.current.value,
           password: passwordRef.current.value,
-        });
-
-        setError(false);
-        //console.log(req.data.user);
-        updateLoggedInUser(req.data.user);
-      } catch (e) {
-        setError(true);
-      }
+        })
+      );
     }
   };
 
   return (
     <form className="login-form">
       <h2>Please Login</h2>
-      {error ? (
+      {auth.error ? (
         <p className="login-form-error"> Username or password incorrect</p>
       ) : (
         <></>
